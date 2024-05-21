@@ -21,6 +21,7 @@ ExclusiveArch:  x86_64 aarch64 ppc64le
 
 BuildRequires:  cmake
 BuildRequires:  clang
+BuildRequires:  coreutils
 
 %description
 High-performance inference of OpenAI's Whisper automatic speech
