@@ -1,3 +1,7 @@
+# Some optional subpackages
+%bcond_with examples
+%bcond_with test
+
 Summary:        Port of OpenAI's Whisper model in C/C++
 Name:           whisper-cpp
 
@@ -62,6 +66,24 @@ recognition (ASR) model:
 * Partial OpenCL GPU support via CLBlast
 * OpenVINO Support
 * C-style API
+
+%if %{with test}
+%package test
+Summary:        Tests for %{name}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+
+%description test
+%{summary}
+%endif
+
+%if %{with examples}
+%package examples
+Summary:        Examples for %{name}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+
+%description examples
+%{summary}
+%endif
 
 %prep
 %autosetup -p1 -n whisper.cpp-%{version}
