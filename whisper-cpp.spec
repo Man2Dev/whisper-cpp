@@ -91,8 +91,10 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 # verson the *.so
 sed -i -e 's/POSITION_INDEPENDENT_CODE ON/POSITION_INDEPENDENT_CODE ON SOVERSION %{version}/' CMakeLists.txt
 
-%build
+# git cruft
+find . -name '.gitignore' -exec rm -rf {} \;
 
+%build
 %cmake \
     -DWHISPER_BUILD_TESTS=ON \
     -DWHISPER_NO_AVX=ON \
