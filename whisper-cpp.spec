@@ -8,15 +8,13 @@ License:        MIT
 # examples/whisper.android/gradlew*
 # These are not distributed
 
-Version:        1.5.4
+Version:        1.6.0
 Release:        %autorelease
 
 URL:            https://github.com/ggerganov/whisper.cpp
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/whisper.cpp-%{version}.tar.gz
 # https://github.com/ggerganov/whisper.cpp/pull/1791
 Patch0:         0001-Generalize-install-locations.patch
-# https://github.com/ggerganov/whisper.cpp/pull/1792
-Patch1:         0001-libwhisper.so-should-be-position-independent.patch
 
 ExclusiveArch:  x86_64 aarch64 ppc64le
 %global toolchain clang
