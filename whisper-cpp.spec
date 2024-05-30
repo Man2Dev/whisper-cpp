@@ -23,9 +23,14 @@ Patch0:         0001-Generalize-install-locations.patch
 ExclusiveArch:  x86_64 aarch64 ppc64le
 %global toolchain clang
 
-BuildRequires:  cmake
+BuildRequires:  cmake >= 3.27
 BuildRequires:  clang
 BuildRequires:  coreutils
+BuildRequires:  ffmpeg
+
+Requires:	ffmpeg
+
+# TODO: add openblas package
 
 %description
 High-performance inference of OpenAI's Whisper automatic speech
@@ -96,7 +101,8 @@ find . -name '.gitignore' -exec rm -rf {} \;
 
 %build
 %cmake \
-    -DWHISPER_BUILD_TESTS=ON \
+    -DCMAKE_SYSTEM_NAME=ON
+    -DWHISPER_BUILD_TESTS=OFF \
     -DWHISPER_NO_AVX=ON \
     -DWHISPER_NO_AVX2=ON \
     -DWHISPER_NO_FMA=ON \
