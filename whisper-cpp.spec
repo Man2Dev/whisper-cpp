@@ -26,10 +26,9 @@ ExclusiveArch:  x86_64 aarch64
 BuildRequires:  cmake >= 3.27
 BuildRequires:  clang
 BuildRequires:  coreutils
-BuildRequires:  sed
 BuildRequires:  git
-BuildRequires:  pkgconfig(ffmpeg)
-BuildRequires:  pkgconfig(ffmpeg-devel)
+#BuildRequires:  ffmpeg
+#BuildRequires:  ffmpeg-devel
 
 #Requires:	ffmpeg
 #Requires:	ffmpeg-devel
