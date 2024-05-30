@@ -21,15 +21,16 @@ Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/whisper.cpp-%{versi
 Patch0:         0001-Generalize-install-locations.patch
 
 ExclusiveArch:  x86_64 aarch64
-%global toolchain clang
+%global toolchain gcc
+#%global toolchain clang
 
 BuildRequires:  cmake >= 3.27
 BuildRequires:  clang
 BuildRequires:  coreutils
-BuildRequires:  ffmpeg-devel
+#BuildRequires:  ffmpeg-devel
 
-Requires:	ffmpeg-devel
-Requires:       cmake-filesystem
+#Requires:	ffmpeg-devel
+#Requires:       cmake-filesystem
 
 # TODO: add openblas package
 # TODO: add OPENVINO package
