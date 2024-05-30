@@ -26,14 +26,15 @@ ExclusiveArch:  x86_64 aarch64 ppc64le
 BuildRequires:  cmake >= 3.27
 BuildRequires:  clang
 BuildRequires:  coreutils
-#BuildRequires:  ffmpeg-devel
+BuildRequires:  ffmpeg-deviel
 
-#Requires:	ffmpeg-devel
+Requires:	ffmpeg-devel
 
 # TODO: add openblas package
 # TODO: add OPENVINO package
+# TODO: add CLBLAST package
 
-# TODO opencl, rocm
+# TODO opencl, rocm, CoreML
 
 %description
 High-performance inference of OpenAI's Whisper automatic speech
