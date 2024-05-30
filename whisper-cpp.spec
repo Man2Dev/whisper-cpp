@@ -30,8 +30,8 @@ BuildRequires:  git
 #BuildRequires:  ffmpeg
 #BuildRequires:  ffmpeg-devel
 
-#Requires:	ffmpeg
-#Requires:	ffmpeg-devel
+Requires:	ffmpeg
+Requires:	ffmpeg-devel
 
 # TODO: add openblas package
 # TODO: add OPENVINO package
