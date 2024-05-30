@@ -18,19 +18,21 @@ Release:        %autorelease
 URL:            https://github.com/ggerganov/whisper.cpp
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/whisper.cpp-%{version}.tar.gz
 # https://github.com/ggerganov/whisper.cpp/pull/1791
-Patch0:         0001-Generalize-install-locations.patch
+# Patch0:         0001-Gieneralize-install-locations.patch
 
 ExclusiveArch:  x86_64 aarch64
 %global toolchain gcc
-#%global toolchain clang
 
 BuildRequires:  cmake >= 3.27
 BuildRequires:  clang
 BuildRequires:  coreutils
-#BuildRequires:  ffmpeg-devel
+BuildRequires:  sed
+BuildRequires:  git
+BuildRequires:  pkgconfig(ffmpeg)
+BuildRequires:  pkgconfig(ffmpeg-devel)
 
+#Requires:	ffmpeg
 #Requires:	ffmpeg-devel
-#Requires:       cmake-filesystem
 
 # TODO: add openblas package
 # TODO: add OPENVINO package
