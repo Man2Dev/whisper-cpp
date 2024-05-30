@@ -26,9 +26,9 @@ ExclusiveArch:  x86_64 aarch64 ppc64le
 BuildRequires:  cmake >= 3.27
 BuildRequires:  clang
 BuildRequires:  coreutils
-BuildRequires:  ffmpeg
+#BuildRequires:  ffmpeg-devel
 
-Requires:	ffmpeg
+#Requires:	ffmpeg-devel
 
 # TODO: add openblas package
 
