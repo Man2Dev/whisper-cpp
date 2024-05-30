@@ -20,15 +20,16 @@ Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/whisper.cpp-%{versi
 # https://github.com/ggerganov/whisper.cpp/pull/1791
 Patch0:         0001-Generalize-install-locations.patch
 
-ExclusiveArch:  x86_64 aarch64 ppc64le
+ExclusiveArch:  x86_64 aarch64
 %global toolchain clang
 
 BuildRequires:  cmake >= 3.27
 BuildRequires:  clang
 BuildRequires:  coreutils
-BuildRequires:  ffmpeg-deviel
+BuildRequires:  ffmpeg-devel
 
 Requires:	ffmpeg-devel
+Requires:       cmake-filesystem
 
 # TODO: add openblas package
 # TODO: add OPENVINO package
@@ -112,7 +113,17 @@ find . -name '.gitignore' -exec rm -rf {} \;
     -DWHISPER_NO_AVX2=ON \
     -DWHISPER_NO_FMA=ON \
     -DWHISPER_NO_F16C=ON
-    
+%if %{with examples}
+    -DWHISPER_BUILD_EXAMPLES=ON
+%else
+    -DWHISPER_BUILD_EXAMPLES=OFF
+%endif
+%if %{with test}
+    -DWHISPER_BUILD_TESTS=OFF
+%else
+    -DWHISPER_BUILD_TESTS=OFF
+%endif
+
 %cmake_build
 
 %install
