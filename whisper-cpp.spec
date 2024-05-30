@@ -31,6 +31,9 @@ BuildRequires:  coreutils
 #Requires:	ffmpeg-devel
 
 # TODO: add openblas package
+# TODO: add OPENVINO package
+
+# TODO opencl, rocm
 
 %description
 High-performance inference of OpenAI's Whisper automatic speech
@@ -103,6 +106,7 @@ find . -name '.gitignore' -exec rm -rf {} \;
 %cmake \
     -DCMAKE_SYSTEM_NAME=ON
     -DWHISPER_BUILD_TESTS=OFF \
+    -DWHISPER_BUILD_EXAMPLES=OFF \
     -DWHISPER_NO_AVX=ON \
     -DWHISPER_NO_AVX2=ON \
     -DWHISPER_NO_FMA=ON \
