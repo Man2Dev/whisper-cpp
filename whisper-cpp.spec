@@ -64,7 +64,7 @@ recognition (ASR) model:
 %description
 %{base_description}
 
-%package -n devel
+%package devel
 Summary:        Libraries and headers for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 
@@ -72,7 +72,7 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %{base_description}
 
 %if %{with test}
-%package -n test
+%package test
 Summary:        Tests for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 
@@ -81,7 +81,7 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %if %{with examples}
-%package -n examples
+%package examples
 Summary:        Examples for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 
@@ -90,7 +90,7 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %endif
 
 %if %{with openvino}
-%package -n openvino
+%package openvino
 Summary:        %{name} with openvino
 Requires:       %{name}%{?_isa} = openvino-%{version}-%{release}
 
@@ -99,7 +99,7 @@ Requires:       %{name}%{?_isa} = openvino-%{version}-%{release}
 %endif
 
 %if %{with openblas}
-%package -n openblas
+%package openblas
 Summary:        %{name} with openblas
 Requires:       %{name}%{?_isa} = openblas-%{version}-%{release}
 
