@@ -29,6 +29,7 @@ BuildRequires:  cmake >= 3.27
 BuildRequires:  clang
 BuildRequires:  coreutils
 BuildRequires:  git
+BuildRequires:  ccache
 #BuildRequires:  ffmpeg
 #BuildRequires:  ffmpeg-devel
 
