@@ -1,6 +1,8 @@
 # Some optional subpackages
 %bcond_with examples
 %bcond_with test
+%bcond_with openblas
+%bcond_with openvino
 
 Summary:        Port of OpenAI's Whisper model in C/C++
 Name:           whisper-cpp
@@ -38,8 +40,10 @@ Requires:	ffmpeg-devel
 # TODO: add CLBLAST package
 
 # TODO opencl, rocm, CoreML
+# TODO bindings/go/* and add package
 
-%description
+
+%global base_description \
 High-performance inference of OpenAI's Whisper automatic speech
 recognition (ASR) model:
 
@@ -56,28 +60,16 @@ recognition (ASR) model:
 * Partial OpenCL GPU support via CLBlast
 * OpenVINO Support
 * C-style API
+
+%description
+%{base_description}
 
 %package devel
 Summary:        Libraries and headers for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description devel
-High-performance inference of OpenAI's Whisper automatic speech
-recognition (ASR) model:
-
-* Plain C/C++ implementation without dependencies
-* Apple Silicon first-class citizen - optimized via ARM NEON,
-  Accelerate framework, Metal and Core ML
-* AVX intrinsics support for x86 architectures
-* VSX intrinsics support for POWER architectures
-* Mixed F16 / F32 precision
-* 4-bit and 5-bit integer quantization support
-* Zero memory allocations at runtime
-* Support for CPU-only inference
-* Efficient GPU support for NVIDIA
-* Partial OpenCL GPU support via CLBlast
-* OpenVINO Support
-* C-style API
+%{base_description}
 
 %if %{with test}
 %package test
@@ -94,6 +86,24 @@ Summary:        Examples for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description examples
+%{summary}
+%endif
+
+%if %{with openvino}
+%package openvino
+Summary:        %{name} with openvino
+Requires:       %{name}%{?_isa} = openvino-%{version}-%{release}
+
+%description openvino
+%{summary}
+%endif
+
+%if %{with openblas}
+%package openblas
+Summary:        %{name} with openblas
+Requires:       %{name}%{?_isa} = openblas-%{version}-%{release}
+
+%description openblas
 %{summary}
 %endif
 
@@ -137,6 +147,11 @@ find . -name '.gitignore' -exec rm -rf {} \;
     -DWHISPER_OPENVINO=ON
 %else
     -DWHISPER_OPENVINO=OFF
+%endif
+%if %{with openblas}
+    -DWHISPER_OPENBLAS=ON
+%else
+    -DWHISPER_OPENBLAS=OFF
 %endif
 %if %{with examples}
     -DWHISPER_BUILD_EXAMPLES=ON
