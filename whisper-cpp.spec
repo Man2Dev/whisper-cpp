@@ -125,6 +125,8 @@ find . -name '.gitignore' -exec rm -rf {} \;
 %ifarch aarch64
     -DCMAKE_SYSTEM_ARCHITECTURE="aarch64"
 %endif
+    -DCMAKE_SYSTEM_NAME="Linux" \
+    -DCMAKE_BUILD_TYPE="Release" \
     -DBUILD_SHARED_LIBS_DEFAULT=ON \
     -DWHISPER_WASM_SINGLE_FILE=OFF \
     -DWHISPER_ALL_WARNINGS_3RD_PARTY=ON \
@@ -165,10 +167,10 @@ find . -name '.gitignore' -exec rm -rf {} \;
     -DWHISPER_BUILD_TESTS=OFF
 %endif
 
-%cmake_build
+%make_build
 
 %install
-%cmake_install
+%make_install
 
 %check
 %ctest
