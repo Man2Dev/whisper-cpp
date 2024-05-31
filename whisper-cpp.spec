@@ -109,7 +109,7 @@ Requires:       %{name}%{?_isa} = openblas-%{version}-%{release}
 %endif
 
 %prep
-%autosetup -p1 -n whisper.cpp-%{version}
+%autosetup -n whisper.cpp-%{version}
 
 # verson the *.so
 sed -i -e 's/POSITION_INDEPENDENT_CODE ON/POSITION_INDEPENDENT_CODE ON SOVERSION %{version}/' CMakeLists.txt
