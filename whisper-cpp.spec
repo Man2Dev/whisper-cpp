@@ -120,10 +120,10 @@ find . -name '.gitignore' -exec rm -rf {} \;
 %build
 %cmake \
 %ifarch x86_64
-    -DCMAKE_SYSTEM_ARCHITECTURE="x86_64"
+    -DCMAKE_SYSTEM_ARCHITECTURE=%{_build_cpu}
 %endif
 %ifarch aarch64
-    -DCMAKE_SYSTEM_ARCHITECTURE="aarch64"
+    -DCMAKE_SYSTEM_ARCHITECTURE=%{_build_cpu}
 %endif
     -DCMAKE_SYSTEM_NAME="Linux" \
     -DCMAKE_BUILD_TYPE="Release" \
