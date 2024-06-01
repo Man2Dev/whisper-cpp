@@ -125,7 +125,6 @@ find . -name '.gitignore' -exec rm -rf {} \;
 %ifarch aarch64
     -DCMAKE_SYSTEM_ARCHITECTURE=%{_build_cpu}
 %endif
-    -DCMAKE_SYSTEM_NAME="Linux" \
     -DCMAKE_BUILD_TYPE="Release" \
     -DBUILD_SHARED_LIBS_DEFAULT=ON \
     -DWHISPER_WASM_SINGLE_FILE=OFF \
