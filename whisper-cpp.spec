@@ -125,7 +125,6 @@ find . -name '.gitignore' -exec rm -rf {} \;
 %ifarch aarch64
     -DCMAKE_SYSTEM_ARCHITECTURE=%{_build_cpu}
 %endif
-    -DCMAKE_BUILD_TYPE="Release" \
     -DBUILD_SHARED_LIBS_DEFAULT=ON \
     -DWHISPER_WASM_SINGLE_FILE=OFF \
     -DWHISPER_ALL_WARNINGS_3RD_PARTY=ON \
@@ -168,8 +167,10 @@ find . -name '.gitignore' -exec rm -rf {} \;
 
 %make_build
 
+cd whisper.cpp-%{version}/redhat-linux-build/
+
 %install
-%make_install
+%cmake_install
 
 %check
 %ctest
