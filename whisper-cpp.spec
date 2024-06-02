@@ -22,7 +22,7 @@ Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/whisper.cpp-%{versi
 # https://github.com/ggerganov/whisper.cpp/pull/1791
 # Patch0:         0001-Gieneralize-install-locations.patch
 
-ExclusiveArch:  x86_64 aarch64
+ExclusiveArch:  x86_64
 %global toolchain gcc
 
 BuildRequires:  cmake >= 3.27
@@ -119,19 +119,16 @@ find . -name '.gitignore' -exec rm -rf {} \;
 
 %build
 %cmake \
-%ifarch x86_64
-    -DCMAKE_SYSTEM_ARCHITECTURE=%{_build_cpu}
-%endif
-%ifarch aarch64
-    -DCMAKE_SYSTEM_ARCHITECTURE=%{_build_cpu}
-%endif
+    -DCMAKE_SYSTEM_PROCESSOR=%{_build_cpu} \
+    -DCMAKE_SYSTEM_NAME="Linux" \
+    -DCMAKE_BUILD_TYPE="Release" \
     -DBUILD_SHARED_LIBS_DEFAULT=ON \
     -DWHISPER_WASM_SINGLE_FILE=OFF \
     -DWHISPER_ALL_WARNINGS_3RD_PARTY=ON \
     -DWHISPER_SANITIZE_THREAD=OFF \
     -DWHISPER_SANITIZE_ADDRESS=OFF \
     -DWHISPER_SANITIZE_UNDEFINED=OFF \
-    -DCMAKE_SYSTEM_NAME=ON
+    -DCMAKE_SYSTEM_NAME=ON \
     -DWHISPER_BUILD_TESTS=OFF \
     -DWHISPER_BUILD_EXAMPLES=OFF \
     -DWHISPER_SDL2=OFF \
@@ -143,31 +140,31 @@ find . -name '.gitignore' -exec rm -rf {} \;
     -DWHISPER_NO_AVX512_VNNI=ON \
     -DWHISPER_NO_FMA=ON \
     -DWHISPER_NO_F16C=ON \
-    -DWHISPER_PERF=OFF
+    -DWHISPER_PERF=OFF \
 %if %{with openvino}
-    -DWHISPER_OPENVINO=ON
+    -DWHISPER_OPENVINO=ON \
 %else
-    -DWHISPER_OPENVINO=OFF
+    -DWHISPER_OPENVINO=OFF \
 %endif
 %if %{with openblas}
-    -DWHISPER_OPENBLAS=ON
+    -DWHISPER_OPENBLAS=ON \
 %else
-    -DWHISPER_OPENBLAS=OFF
+    -DWHISPER_OPENBLAS=OFF \
 %endif
 %if %{with examples}
-    -DWHISPER_BUILD_EXAMPLES=ON
+    -DWHISPER_BUILD_EXAMPLES=ON \
 %else
-    -DWHISPER_BUILD_EXAMPLES=OFF
+    -DWHISPER_BUILD_EXAMPLES=OFF \
 %endif
 %if %{with test}
-    -DWHISPER_BUILD_TESTS=OFF
+    -DWHISPER_BUILD_TESTS=ON \
 %else
     -DWHISPER_BUILD_TESTS=OFF
 %endif
 
 %make_build
 
-cd whisper.cpp-%{version}/redhat-linux-build/
+# cd whisper.cpp-%{version}/redhat-linux-build/
 
 %install
 %cmake_install
