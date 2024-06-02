@@ -145,6 +145,12 @@ find . -name '.gitignore' -exec rm -rf {} \;
     -DWHISPER_BUILD_EXAMPLES=OFF \
     -DWHISPER_SDL2=OFF \
     -DWHISPER_FFMPEG=ON \
+    -DWHISPER_NO_AVX2=OFF \
+    -DWHISPER_NO_AVX512=OFF \
+    -DWHISPER_NO_AVX512_VBMI=OFF \
+    -DWHISPER_NO_AVX512_VNNI=OFF \
+    -DWHISPER_NO_FMA=OFF \
+    -DWHISPER_NO_F16C=OFF \
     -DWHISPER_PERF=OFF \
 %if %{with openvino}
     -DWHISPER_OPENVINO=ON \
@@ -184,7 +190,6 @@ find . -name '.gitignore' -exec rm -rf {} \;
 %doc README.md
 %{_includedir}/ggml.h
 %{_includedir}/whisper.h
-%{_includedir}
 %{_libdir}/libwhisper.so
 
 %changelog
