@@ -30,7 +30,7 @@ BuildRequires:  clang
 BuildRequires:  coreutils
 BuildRequires:  git
 BuildRequires:  ccache
-# BuildRequires:  ffmpeg-free-devel
+BuildRequires:  ffmpeg-free-devel
 BuildRequires:  pkgconfig(libavcodec)
 BuildRequires:  pkgconfig(libavformat)
 BuildRequires:  pkgconfig(libavdevice)
