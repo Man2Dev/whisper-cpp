@@ -131,14 +131,8 @@ sed -i -e 's/POSITION_INDEPENDENT_CODE ON/POSITION_INDEPENDENT_CODE ON SOVERSION
 # git cruft
 find . -name '.gitignore' -exec rm -rf {} \;
 
-# env verable used in cmake
-#export CMAKE_SOURCE_DIR = %{_sourcedir}/whisper.cpp-%{version}
-#export CMAKE_BINARY_DIR = %{_builddir}/whisper.cpp-%{version}
-# mkdir -p %{_bindir}/whisper.cpp
-
 %build
 %cmake \
-    -DINCLUDE_INSTALL_DIR=%{_bindir}
     -DCMAKE_SYSTEM_PROCESSOR=%{_build_cpu} \
     -DCMAKE_SYSTEM_NAME="Linux" \
     -DCMAKE_BUILD_TYPE="Release" \
@@ -180,20 +174,24 @@ find . -name '.gitignore' -exec rm -rf {} \;
     -DWHISPER_BUILD_TESTS=OFF
 %endif
 
-# cd whisper.cpp-%{version}/%{_vpath_builddir}/
-
 %make_build
 
 %install
-mkdir -p %{buildroot}%{_bindir}/whisper.cpp/
+install -Dpm 0644 %{_vpath_srcdir}/main -t %{buildroot}%{_bindir}/whisper.cpp/whisper-cpp
+install -Dpm 0644 %{_vpath_srcdir}/quantize -t %{buildroot}%{_bindir}/whisper.cpp/whisper-cpp-quantize
+install -Dpm 0644 %{_vpath_srcdir}/server -t %{buildroot}%{_bindir}/whisper.cpp/whisper-cpp-server
+install -Dpm 0644 %{_vpath_srcdir}/bench -t %{buildroot}%{_bindir}/whisper.cpp/whisper-cpp-bench
 
-%make_install
-
-# mkdir -p %{_bindir}/whisper.cpp
-# cd whisper.cpp-%{version}/redhat-linux-build/
-cp -p %{_vpath_srcdir}/main %{buildroot}%{_bindir}/whisper.cpp/whisper-cpp
-cp -p %{_vpath_srcdir}/quantize %{buildroot}%{_bindir}/whisper.cpp/whisper-cpp-quantize
-cp -p %{_vpath_srcdir}/server %{buildroot}%{_bindir}/whisper.cpp/whisper-cpp-server
+# devel
+install -Dp %{_vpath_srcdir}/main -t %{buildroot}%{_libdir}/whisper.cpp/main
+install -Dp %{_vpath_srcdir}/quantize -t %{buildroot}%{_libdir}/whisper.cpp/quantize
+install -Dp %{_vpath_srcdir}/server -t %{buildroot}%{_libdir}/whisper.cpp/server
+install -Dp %{_vpath_srcdir}/bench -t %{buildroot}%{_libdir}/whisper.cpp/bench
+install -Dp %{_vpath_srcdir}/ggml-alloc.o -t %{buildroot}%{_libdir}/whisper.cpp/ggml-alloc.o
+install -Dp %{_vpath_srcdir}/ggml-backend.o -t %{buildroot}%{_libdir}/whisper.cpp/ggml-backend.o
+install -Dp %{_vpath_srcdir}/ggml.o -t %{buildroot}%{_libdir}/whisper.cpp/ggml.o
+install -Dp %{_vpath_srcdir}/ggml-quants.o -t %{buildroot}%{_libdir}/whisper.cpp/ggml-quants.o
+install -Dp %{_vpath_srcdir}/whisper.o -t %{buildroot}%{_libdir}/whisper.cpp/whisper.o
 
 %check
 %ctest
@@ -202,14 +200,18 @@ cp -p %{_vpath_srcdir}/server %{buildroot}%{_bindir}/whisper.cpp/whisper-cpp-ser
 %doc README.md
 %doc AUTHORS
 %license LICENSE
+%{_bindir}/whisper.cpp/whisper-cpp
+%{_bindir}/whisper.cpp/whisper-cpp-quantize
+%{_bindir}/whisper.cpp/whisper-cpp-server
+%{_bindir}/whisper.cpp/whisper-cpp-bench
 
 %files devel
 %doc README.md
 %license LICENSE
-mkdir -p %{_libdir}/whisper.cpp
-cp %{_vpath_srcdir}/main %{_libdir}/whisper.cpp/whisper-cpp
-cp %{_vpath_srcdir}/quantize %{_libdir}/whisper.cpp/whisper-cpp-quantize
-cp %{_vpath_srcdir}/server %{_libdir}/whisper.cpp/whisper-cpp-server
+%{_libdir}/whisper.cpp/main
+%{_libdir}/whisper.cpp/quantize
+%{_libdir}/whisper.cpp/server
+%{_libdir}/whisper.cpp/bench
 %{_libdir}/whisper.cpp/ggml-alloc.o
 %{_libdir}/whisper.cpp/ggml-backend.o
 %{_libdir}/whisper.cpp/ggml.o
