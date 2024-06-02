@@ -30,6 +30,7 @@ BuildRequires:  clang
 BuildRequires:  coreutils
 BuildRequires:  git
 BuildRequires:  ccache
+# BuildRequires:  ffmpeg-free-devel
 BuildRequires:  pkgconfig(libavcodec)
 BuildRequires:  pkgconfig(libavformat)
 BuildRequires:  pkgconfig(libavdevice)
@@ -39,6 +40,7 @@ BuildRequires:  pkgconfig(libswscale)
 BuildRequires:  pkgconfig(libpostproc)
 BuildRequires:  pkgconfig(libswresample)
 
+Requires:  /usr/bin/ffmpeg
 Requires:  pkgconfig(libavcodec)
 Requires:  pkgconfig(libavformat)
 Requires:  pkgconfig(libavdevice)
@@ -129,21 +131,26 @@ sed -i -e 's/POSITION_INDEPENDENT_CODE ON/POSITION_INDEPENDENT_CODE ON SOVERSION
 # git cruft
 find . -name '.gitignore' -exec rm -rf {} \;
 
+# env verable used in cmake
+#export CMAKE_SOURCE_DIR = %{_sourcedir}/whisper.cpp-%{version}
+#export CMAKE_BINARY_DIR = %{_builddir}/whisper.cpp-%{version}
+# mkdir -p %{_bindir}/whisper.cpp
+
 %build
 %cmake \
+    -DINCLUDE_INSTALL_DIR=%{_bindir}
     -DCMAKE_SYSTEM_PROCESSOR=%{_build_cpu} \
     -DCMAKE_SYSTEM_NAME="Linux" \
-    -DCMAKE_BUILD_TYPE="RelWithDebInfo" \
+    -DCMAKE_BUILD_TYPE="Release" \
     -DBUILD_SHARED_LIBS_DEFAULT=ON \
     -DWHISPER_WASM_SINGLE_FILE=OFF \
     -DWHISPER_ALL_WARNINGS_3RD_PARTY=ON \
     -DWHISPER_SANITIZE_THREAD=OFF \
     -DWHISPER_SANITIZE_ADDRESS=OFF \
     -DWHISPER_SANITIZE_UNDEFINED=OFF \
-    -DCMAKE_SYSTEM_NAME=ON \
     -DWHISPER_BUILD_TESTS=OFF \
     -DWHISPER_BUILD_EXAMPLES=OFF \
-    -DWHISPER_SDL2=OFF \
+    -DWHISPER_SDL2=ON \
     -DWHISPER_FFMPEG=ON \
     -DWHISPER_NO_AVX2=OFF \
     -DWHISPER_NO_AVX512=OFF \
@@ -173,24 +180,41 @@ find . -name '.gitignore' -exec rm -rf {} \;
     -DWHISPER_BUILD_TESTS=OFF
 %endif
 
-# cd whisper.cpp-%{version}/redhat-linux-build/
+# cd whisper.cpp-%{version}/%{_vpath_builddir}/
 
 %make_build
 
 %install
+mkdir -p %{buildroot}%{_bindir}/whisper.cpp/
+
 %make_install
+
+# mkdir -p %{_bindir}/whisper.cpp
+# cd whisper.cpp-%{version}/redhat-linux-build/
+cp -p %{_vpath_srcdir}/main %{buildroot}%{_bindir}/whisper.cpp/whisper-cpp
+cp -p %{_vpath_srcdir}/quantize %{buildroot}%{_bindir}/whisper.cpp/whisper-cpp-quantize
+cp -p %{_vpath_srcdir}/server %{buildroot}%{_bindir}/whisper.cpp/whisper-cpp-server
 
 %check
 %ctest
 
 %files
+%doc README.md
+%doc AUTHORS
 %license LICENSE
 
 %files devel
 %doc README.md
-%{_includedir}/ggml.h
-%{_includedir}/whisper.h
-%{_libdir}/libwhisper.so
+%license LICENSE
+mkdir -p %{_libdir}/whisper.cpp
+cp %{_vpath_srcdir}/main %{_libdir}/whisper.cpp/whisper-cpp
+cp %{_vpath_srcdir}/quantize %{_libdir}/whisper.cpp/whisper-cpp-quantize
+cp %{_vpath_srcdir}/server %{_libdir}/whisper.cpp/whisper-cpp-server
+%{_libdir}/whisper.cpp/ggml-alloc.o
+%{_libdir}/whisper.cpp/ggml-backend.o
+%{_libdir}/whisper.cpp/ggml.o
+%{_libdir}/whisper.cpp/ggml-quants.o
+%{_libdir}/whisper.cpp/whisper.o
 
 %changelog
 %autochangelog
