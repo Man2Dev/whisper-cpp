@@ -22,7 +22,7 @@ Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/whisper.cpp-%{versi
 # https://github.com/ggerganov/whisper.cpp/pull/1791
 # Patch0:         0001-Gieneralize-install-locations.patch
 
-ExclusiveArch:  x86_64
+ExclusiveArch:  x86_64 aarch64
 %global toolchain gcc
 
 BuildRequires:  cmake >= 3.27
