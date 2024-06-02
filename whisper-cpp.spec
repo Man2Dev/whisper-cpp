@@ -30,11 +30,23 @@ BuildRequires:  clang
 BuildRequires:  coreutils
 BuildRequires:  git
 BuildRequires:  ccache
-#BuildRequires:  ffmpeg
-#BuildRequires:  ffmpeg-devel
+BuildRequires:  pkgconfig(libavcodec)
+BuildRequires:  pkgconfig(libavformat)
+BuildRequires:  pkgconfig(libavdevice)
+BuildRequires:  pkgconfig(libavutil)
+BuildRequires:  pkgconfig(libavfilter)
+BuildRequires:  pkgconfig(libswscale)
+BuildRequires:  pkgconfig(libpostproc)
+BuildRequires:  pkgconfig(libswresample)
 
-Requires:	ffmpeg
-Requires:	ffmpeg-devel
+Requires:  pkgconfig(libavcodec)
+Requires:  pkgconfig(libavformat)
+Requires:  pkgconfig(libavdevice)
+Requires:  pkgconfig(libavutil)
+Requires:  pkgconfig(libavfilter)
+Requires:  pkgconfig(libswscale)
+Requires:  pkgconfig(libpostproc)
+Requires:  pkgconfig(libswresample)
 
 # TODO: add openblas package
 # TODO: add OPENVINO package
@@ -121,7 +133,7 @@ find . -name '.gitignore' -exec rm -rf {} \;
 %cmake \
     -DCMAKE_SYSTEM_PROCESSOR=%{_build_cpu} \
     -DCMAKE_SYSTEM_NAME="Linux" \
-    -DCMAKE_BUILD_TYPE="Release" \
+    -DCMAKE_BUILD_TYPE="RelWithDebInfo" \
     -DBUILD_SHARED_LIBS_DEFAULT=ON \
     -DWHISPER_WASM_SINGLE_FILE=OFF \
     -DWHISPER_ALL_WARNINGS_3RD_PARTY=ON \
@@ -133,13 +145,6 @@ find . -name '.gitignore' -exec rm -rf {} \;
     -DWHISPER_BUILD_EXAMPLES=OFF \
     -DWHISPER_SDL2=OFF \
     -DWHISPER_FFMPEG=ON \
-    -DWHISPER_NO_AVX=ON \
-    -DWHISPER_NO_AVX2=ON \
-    -DWHISPER_NO_AVX512=ON \
-    -DWHISPER_NO_AVX512_VBMI=ON \
-    -DWHISPER_NO_AVX512_VNNI=ON \
-    -DWHISPER_NO_FMA=ON \
-    -DWHISPER_NO_F16C=ON \
     -DWHISPER_PERF=OFF \
 %if %{with openvino}
     -DWHISPER_OPENVINO=ON \
@@ -162,24 +167,24 @@ find . -name '.gitignore' -exec rm -rf {} \;
     -DWHISPER_BUILD_TESTS=OFF
 %endif
 
-%make_build
-
 # cd whisper.cpp-%{version}/redhat-linux-build/
 
+%make_build
+
 %install
-%cmake_install
+%make_install
 
 %check
 %ctest
 
 %files
 %license LICENSE
-%{_libdir}/libwhisper.so.%{version}
 
 %files devel
 %doc README.md
 %{_includedir}/ggml.h
 %{_includedir}/whisper.h
+%{_includedir}
 %{_libdir}/libwhisper.so
 
 %changelog
