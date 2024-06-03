@@ -3,13 +3,10 @@ upstream_package_name: whisper-cpp
 downstream_package_name: whisper-cpp
 actions:
   # fix-spec-file: Optional if you want to make sure the spec file is exactly as in the git repo
-  # fix-spec-file: [ ]
+  fix-spec-file: [ ]
   # create-archive: Here is the magic sauce. Just download the files in `Source` instead of running `git archive`
   create-archive:
-    - spectool -g -s whisper-cpp.spec
-    # Need to tell packit where the 
-    - sh -c 'echo whisper.cpp-${PACKIT_PROJECT_VERSION}.tar.gz'
-  # get-current-version: Just read the `Version` from the spec file
+    - echo whisper-cpp.spec
   get-current-version:
     - rpmspec -q --qf "%{Version}" --srpm whisper-cpp.spec
 
