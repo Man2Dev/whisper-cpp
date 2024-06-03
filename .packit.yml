@@ -1,5 +1,5 @@
 specfile_path: whisper-cpp.spec
-upstream_package_name: whisper.cpp
+upstream_package_name: whisper-cpp
 downstream_package_name: whisper-cpp
 actions:
   # fix-spec-file: Optional if you want to make sure the spec file is exactly as in the git repo
