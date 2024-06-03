@@ -30,7 +30,7 @@ BuildRequires:  clang
 BuildRequires:  coreutils
 BuildRequires:  git
 BuildRequires:  ccache
-BuildRequires:  ffmpeg-free-devel
+# BuildRequires:  ffmpeg-free-devel
 BuildRequires:  pkgconfig(libavcodec)
 BuildRequires:  pkgconfig(libavformat)
 BuildRequires:  pkgconfig(libavdevice)
@@ -135,7 +135,7 @@ find . -name '.gitignore' -exec rm -rf {} \;
 %cmake \
     -DCMAKE_SYSTEM_PROCESSOR=%{_build_cpu} \
     -DCMAKE_SYSTEM_NAME="Linux" \
-    -DCMAKE_BUILD_TYPE="Release" \
+    -DCMAKE_BUILD_TYPE="RelWithDebInfo" \
     -DBUILD_SHARED_LIBS_DEFAULT=ON \
     -DWHISPER_WASM_SINGLE_FILE=OFF \
     -DWHISPER_ALL_WARNINGS_3RD_PARTY=ON \
