@@ -174,6 +174,8 @@ find . -name '.gitignore' -exec rm -rf {} \;
     -DWHISPER_BUILD_TESTS=OFF \
 %endif
 
+%make_build
+
 %install
 %make_install %{__make} install DESTDIR=%{?buildroot} \
      INSTALL="%{__install} -Dp %{_vpath_srcdir}/main -t %{buildroot}%{_bindir}/whisper-cpp" \
