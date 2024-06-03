@@ -18,3 +18,4 @@ jobs:
     trigger: commit
     targets:
       - fedora-rawhide
+      - fedora-stable
