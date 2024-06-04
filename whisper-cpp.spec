@@ -205,10 +205,12 @@ make clean
      INSTALL="%{__install} -Dp %{_vpath_srcdir}/quantize -t %{_bindir}/whisper-cpp-quantize" \
      INSTALL="%{__install} -Dp %{_vpath_srcdir}/server -t %{_bindir}/whisper-cpp-server" \
      INSTALL="%{__install} -Dp %{_vpath_srcdir}/bench -t %{_bindir}/whisper-cpp-bench" \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/stream -t %{_bindir}/whisper-cpp-stream" \
      INSTALL="%{__install} -Dp %{_vpath_srcdir}/main -t %{_libdir}/main" \
      INSTALL="%{__install} -Dp %{_vpath_srcdir}/quantize -t %{_libdir}/quantize" \
      INSTALL="%{__install} -Dp %{_vpath_srcdir}/server -t %{_libdir}/server" \
      INSTALL="%{__install} -Dp %{_vpath_srcdir}/bench -t %{_libdir}/bench" \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/stream -t %{_libdir}/stream" \
      INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml-alloc.o -t %{_libdir}/ggml-alloc.o" \
      INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml-backend.o -t %{_libdir}/ggml-backend.o" \
      INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml.o -t %{_libdir}/ggml.o" \
