@@ -147,11 +147,10 @@ make clean
 
 %cmake \
     -DCMAKE_BUILD_TYPE="RelWithDebInfo" \
-    -DCMAKE_INSTALL_DO_STRIP=ON \
-    -DINCLUDE_INSTALL_DIR=%{buildroot} \
+    -DINCLUDE_INSTALL_DIR=%{_includedir} \
     -DLIB_INSTALL_DIR=%{_libdir} \
     -DLIB_SUFFIX=".so" \
-    -DSHARE_INSTALL_PREFIX=%{_libdir} \
+    -DSHARE_INSTALL_PREFIX=%{_prefix} \
     -DSYSCONF_INSTALL_DIR=%{_sysconfdir} \
     -DCMAKE_SYSTEM_PROCESSOR=%{_build_cpu} \
     -DCMAKE_SYSTEM_NAME="Linux" \
@@ -200,22 +199,21 @@ make clean
 %make_build stream
 
 %install
-%make_install %{__make} install DESTDIR=%{?buildroot} \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/main -t %{_bindir}/whisper-cpp" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/quantize -t %{_bindir}/whisper-cpp-quantize" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/server -t %{_bindir}/whisper-cpp-server" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/bench -t %{_bindir}/whisper-cpp-bench" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/stream -t %{_bindir}/whisper-cpp-stream" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/main -t %{_libdir}/main" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/quantize -t %{_libdir}/quantize" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/server -t %{_libdir}/server" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/bench -t %{_libdir}/bench" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/stream -t %{_libdir}/stream" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml-alloc.o -t %{_libdir}/ggml-alloc.o" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml-backend.o -t %{_libdir}/ggml-backend.o" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml.o -t %{_libdir}/ggml.o" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml-quants.o -t %{_libdir}/ggml-quants.o" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/whisper.o -t %{_libdir}/whisper.o"
+install -p %{_vpath_srcdir}/main -t %{_bindir}/whisper-cpp"
+install -p %{_vpath_srcdir}/quantize -t %{_bindir}/whisper-cpp-quantize"
+install -p %{_vpath_srcdir}/server -t %{_bindir}/whisper-cpp-server"
+install -p %{_vpath_srcdir}/bench -t %{_bindir}/whisper-cpp-bench"
+install -p %{_vpath_srcdir}/stream -t %{_bindir}/whisper-cpp-stream"
+install -p %{_vpath_srcdir}/main -t %{_libdir}/main"
+install -p %{_vpath_srcdir}/quantize -t %{_libdir}/quantize"
+install -p %{_vpath_srcdir}/server -t %{_libdir}/server"
+install -p %{_vpath_srcdir}/bench -t %{_libdir}/bench"
+install -p %{_vpath_srcdir}/stream -t %{_libdir}/stream"
+install -p %{_vpath_srcdir}/ggml-alloc.o -t %{_libdir}/ggml-alloc.o"
+install -p %{_vpath_srcdir}/ggml-backend.o -t %{_libdir}/ggml-backend.o"
+install -p %{_vpath_srcdir}/ggml.o -t %{_libdir}/ggml.o"
+install -p %{_vpath_srcdir}/ggml-quants.o -t %{_libdir}/ggml-quants.o"
+install -p %{_vpath_srcdir}/whisper.o -t %{_libdir}/whisper.o"
 
 %files
 %doc README.md
