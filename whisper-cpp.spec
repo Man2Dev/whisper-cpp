@@ -30,6 +30,7 @@ BuildRequires:  clang
 BuildRequires:  coreutils
 BuildRequires:  git
 BuildRequires:  ccache
+BuildRequires:  SDL2-static
 # BuildRequires:  ffmpeg-free-devel
 BuildRequires:  pkgconfig(libavcodec)
 BuildRequires:  pkgconfig(libavformat)
@@ -191,21 +192,48 @@ make clean
     -DWHISPER_BUILD_TESTS=OFF 
 %endif
 
-%cmake_build
 
-%make_build %{buildroot}
+# output
+# main, quantize, server, bench
+%make_build %{_make_output_sync} %{?_smp_mflags} %{_make_verbose}
 
 %install
+%make_install %{__make} install DESTDIR=%{?buildroot} \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/main -t %{_bindir}/whisper-cpp" \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/quantize -t %{_bindir}/whisper-cpp-quantize" \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/server -t %{_bindir}/whisper-cpp-server" \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/bench -t %{_bindir}/whisper-cpp-bench" \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/main -t %{_libdir}/main" \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/quantize -t %{_libdir}/quantize" \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/server -t %{_libdir}/server" \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/bench -t %{_libdir}/bench" \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml-alloc.o -t %{_libdir}/ggml-alloc.o" \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml-backend.o -t %{_libdir}/ggml-backend.o" \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml.o -t %{_libdir}/ggml.o" \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml-quants.o -t %{_libdir}/ggml-quants.o" \
+     INSTALL="%{__install} -Dp %{_vpath_srcdir}/whisper.o -t %{_libdir}/whisper.o"
 
 %files
 %doc README.md
 %doc AUTHORS
 %license LICENSE
-%{_libdir}/libwhisper.so.%{version}
+%{_bindir}/whisper-cpp
+%{_bindir}/whisper-cpp-quantize
+%{_bindir}/whisper-cpp-server
+%{_bindir}/whisper-cpp-bench
 
 %files devel
 %doc README.md
 %license LICENSE
+%{_libdir}/main
+%{_libdir}/quantize
+%{_libdir}/server
+%{_libdir}/bench
+%{_libdir}/ggml-alloc.o
+%{_libdir}/ggml-backend.o
+%{_libdir}/ggml.o
+%{_libdir}/ggml-quants.o
+%{_libdir}/whisper.o
 
 %changelog
 %autochangelog
