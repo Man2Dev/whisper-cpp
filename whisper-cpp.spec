@@ -39,6 +39,9 @@ BuildRequires:  pkgconfig(libavfilter)
 BuildRequires:  pkgconfig(libswscale)
 BuildRequires:  pkgconfig(libpostproc)
 BuildRequires:  pkgconfig(libswresample)
+BuildRequires:  python3-devel
+BuildRequires:  python3dist(pip)
+BuildRequires:  python3dist(poetry)
 
 Requires:  /usr/bin/ffmpeg
 Requires:  pkgconfig(libavcodec)
@@ -132,11 +135,23 @@ sed -i -e 's/POSITION_INDEPENDENT_CODE ON/POSITION_INDEPENDENT_CODE ON SOVERSION
 find . -name '.gitignore' -exec rm -rf {} \;
 
 %build
-# export TARGET=%{buildroot}
+make clean
+%set_build_flags \
+  CFLAGS="${CFLAGS:-%{?build_cflags}}" ; export CFLAGS ; \
+  CXXFLAGS="${CXXFLAGS:-%{?build_cxxflags}}" ; export CXXFLAGS ; \
+  FFLAGS="${FFLAGS:-%{?build_fflags}}" ; export FFLAGS ; \
+  FCFLAGS="${FCFLAGS:-%{?build_fflags}}" ; export FCFLAGS ; \
+  LDFLAGS="${LDFLAGS:-%{?build_ldflags}}" ; export LDFLAGS
 %cmake \
+    -DCMAKE_INSTALL_DO_STRIP=ON \
+    -DINCLUDE_INSTALL_DIR=%{buildroot} \
+    -DLIB_INSTALL_DIR=%{buildroot}%{_libdir} \
+    -DLIB_SUFFIX=".so" \
+    -DSHARE_INSTALL_PREFIX=%{buildroot} \
+    -DSYSCONF_INSTALL_DIR=%{buildroot}%{_sysconfdir} \
     -DCMAKE_SYSTEM_PROCESSOR=%{_build_cpu} \
     -DCMAKE_SYSTEM_NAME="Linux" \
-    -DBUILD_SHARED_LIBS_DEFAULT=OFF \
+    -DBUILD_SHARED_LIBS_DEFAULT=ON \
     -DWHISPER_WASM_SINGLE_FILE=OFF \
     -DWHISPER_ALL_WARNINGS_3RD_PARTY=ON \
     -DWHISPER_SANITIZE_THREAD=OFF \
@@ -171,7 +186,7 @@ find . -name '.gitignore' -exec rm -rf {} \;
 %if %{with test}
     -DWHISPER_BUILD_TESTS=ON \
 %else
-    -DWHISPER_BUILD_TESTS=OFF \
+    -DWHISPER_BUILD_TESTS=OFF
 %endif
 
 %make_build
