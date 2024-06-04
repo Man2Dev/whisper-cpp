@@ -223,6 +223,7 @@ install -p %{_vpath_srcdir}/whisper.o -t %{_libdir}/whisper.o"
 %{_bindir}/whisper-cpp-quantize
 %{_bindir}/whisper-cpp-server
 %{_bindir}/whisper-cpp-bench
+%{_bindir}/whisper-cpp-stream
 
 %files devel
 %doc README.md
@@ -231,6 +232,7 @@ install -p %{_vpath_srcdir}/whisper.o -t %{_libdir}/whisper.o"
 %{_libdir}/quantize
 %{_libdir}/server
 %{_libdir}/bench
+%{_libdir}/stream
 %{_libdir}/ggml-alloc.o
 %{_libdir}/ggml-backend.o
 %{_libdir}/ggml.o
