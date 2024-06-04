@@ -189,7 +189,7 @@ make clean
 %if %{with test}
     -DWHISPER_BUILD_TESTS=ON \
 %else
-    -DWHISPER_BUILD_TESTS=OFF 
+    -DWHISPER_BUILD_TESTS=OFF \
 %endif
 
 
@@ -198,7 +198,6 @@ make clean
 %make_build %{_make_output_sync} %{?_smp_mflags} %{_make_verbose}
 %make_build stream
 
-%install
 install -p %{_vpath_srcdir}/main -t %{_bindir}/whisper-cpp
 install -p %{_vpath_srcdir}/quantize -t %{_bindir}/whisper-cpp-quantize
 install -p %{_vpath_srcdir}/server -t %{_bindir}/whisper-cpp-server
