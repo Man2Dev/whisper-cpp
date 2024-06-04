@@ -136,19 +136,21 @@ find . -name '.gitignore' -exec rm -rf {} \;
 
 %build
 make clean
+
 %set_build_flags \
   CFLAGS="${CFLAGS:-%{?build_cflags}}" ; export CFLAGS ; \
   CXXFLAGS="${CXXFLAGS:-%{?build_cxxflags}}" ; export CXXFLAGS ; \
   FFLAGS="${FFLAGS:-%{?build_fflags}}" ; export FFLAGS ; \
   FCFLAGS="${FCFLAGS:-%{?build_fflags}}" ; export FCFLAGS ; \
   LDFLAGS="${LDFLAGS:-%{?build_ldflags}}" ; export LDFLAGS
+
 %cmake \
     -DCMAKE_INSTALL_DO_STRIP=ON \
     -DINCLUDE_INSTALL_DIR=%{buildroot} \
-    -DLIB_INSTALL_DIR=%{buildroot}%{_libdir} \
+    -DLIB_INSTALL_DIR=%{_libdir} \
     -DLIB_SUFFIX=".so" \
-    -DSHARE_INSTALL_PREFIX=%{buildroot} \
-    -DSYSCONF_INSTALL_DIR=%{buildroot}%{_sysconfdir} \
+    -DSHARE_INSTALL_PREFIX=%{_libdir} \
+    -DSYSCONF_INSTALL_DIR=%{_sysconfdir} \
     -DCMAKE_SYSTEM_PROCESSOR=%{_build_cpu} \
     -DCMAKE_SYSTEM_NAME="Linux" \
     -DBUILD_SHARED_LIBS_DEFAULT=ON \
@@ -186,48 +188,24 @@ make clean
 %if %{with test}
     -DWHISPER_BUILD_TESTS=ON \
 %else
-    -DWHISPER_BUILD_TESTS=OFF
+    -DWHISPER_BUILD_TESTS=OFF 
 %endif
 
-%make_build
+%cmake_build
+
+%make_build %{buildroot}
 
 %install
-%make_install %{__make} install DESTDIR=%{?buildroot} \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/main -t %{buildroot}%{_bindir}/whisper-cpp" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/quantize -t %{buildroot}%{_bindir}/whisper-cpp-quantize" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/server -t %{buildroot}%{_bindir}/whisper-cpp-server" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/bench -t %{buildroot}%{_bindir}/whisper-cpp-bench" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/main -t %{buildroot}%{_libdir}/main" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/quantize -t %{buildroot}%{_libdir}/quantize" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/server -t %{buildroot}%{_libdir}/server" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/bench -t %{buildroot}%{_libdir}/bench" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml-alloc.o -t %{buildroot}%{_libdir}/ggml-alloc.o" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml-backend.o -t %{buildroot}%{_libdir}/ggml-backend.o" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml.o -t %{buildroot}%{_libdir}/ggml.o" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/ggml-quants.o -t %{buildroot}%{_libdir}/ggml-quants.o" \
-     INSTALL="%{__install} -Dp %{_vpath_srcdir}/whisper.o -t %{buildroot}%{_libdir}/whisper.o" \
 
 %files
 %doc README.md
 %doc AUTHORS
 %license LICENSE
-%{_bindir}/whisper-cpp
-%{_bindir}/whisper-cpp-quantize
-%{_bindir}/whisper-cpp-server
-%{_bindir}/whisper-cpp-bench
+%{_libdir}/libwhisper.so.%{version}
 
 %files devel
 %doc README.md
 %license LICENSE
-%{_libdir}/main
-%{_libdir}/quantize
-%{_libdir}/server
-%{_libdir}/bench
-%{_libdir}/ggml-alloc.o
-%{_libdir}/ggml-backend.o
-%{_libdir}/ggml.o
-%{_libdir}/ggml-quants.o
-%{_libdir}/whisper.o
 
 %changelog
 %autochangelog
