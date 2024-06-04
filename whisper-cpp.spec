@@ -146,6 +146,7 @@ make clean
   LDFLAGS="${LDFLAGS:-%{?build_ldflags}}" ; export LDFLAGS
 
 %cmake \
+    -DCMAKE_BUILD_TYPE="RelWithDebInfo" \
     -DCMAKE_INSTALL_DO_STRIP=ON \
     -DINCLUDE_INSTALL_DIR=%{buildroot} \
     -DLIB_INSTALL_DIR=%{_libdir} \
@@ -196,6 +197,7 @@ make clean
 # output
 # main, quantize, server, bench
 %make_build %{_make_output_sync} %{?_smp_mflags} %{_make_verbose}
+%make_build stream
 
 %install
 %make_install %{__make} install DESTDIR=%{?buildroot} \
