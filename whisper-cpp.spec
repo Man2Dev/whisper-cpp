@@ -181,7 +181,7 @@ make clean
     -DWHISPER_BUILD_EXAMPLES=ON \
 %endif
 %if %{with test}
-    -DWHISPER_BUILD_TESTS=ON \
+    -DWHISPER_BUILD_TESTS=ON
 %endif
 
 
@@ -193,14 +193,6 @@ make clean
 # libwhisper.so libwhisper.so.%{version}
 %cmake_build
 
-# change named for cli version of binery
-mkdir -p %{buildroot}%{_bindir}
-cp -p %{_vpath_srcdir}/main %{buildroot}%{_bindir}/whisper-cpp
-cp -p %{_vpath_srcdir}/quantize %{buildroot}%{_bindir}/whisper-cpp-quantize
-cp -p %{_vpath_srcdir}/server %{buildroot}%{_bindir}/whisper-cpp-server
-cp -p %{_vpath_srcdir}/bench %{buildroot}%{_bindir}/whisper-cpp-bench
-cp -p %{_vpath_srcdir}/stream %{buildroot}%{_bindir}/whisper-cpp-stream
-
 %install
 %cmake_install
 
@@ -208,29 +200,14 @@ cp -p %{_vpath_srcdir}/stream %{buildroot}%{_bindir}/whisper-cpp-stream
 %doc README.md
 %doc AUTHORS
 %license LICENSE
-%{_bindir}/whisper-cpp
-%{_bindir}/whisper-cpp-quantize
-%{_bindir}/whisper-cpp-server
-%{_bindir}/whisper-cpp-bench
-%{_bindir}/whisper-cpp-stream
-%{_libdir}/libwhisper.so.%{version}
+/usr/lib/libwhisper.so.%{version}
 
 %files devel
 %doc README.md
 %license LICENSE
-%{_libdir}/main
-%{_libdir}/quantize
-%{_libdir}/server
-%{_libdir}/bench
-%{_libdir}/stream
-%{_libdir}/ggml-alloc.o
-%{_libdir}/ggml-backend.o
-%{_libdir}/ggml.o
-%{_libdir}/ggml-quants.o
 %{_includedir}/ggml.h
 %{_includedir}/whisper.h
-%{_libdir}/whisper.o
-%{_libdir}/libwhisper.so
+/usr/lib/libwhisper.so
 
 %changelog
 %autochangelog
