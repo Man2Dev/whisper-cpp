@@ -20,7 +20,7 @@ Release:        %autorelease
 URL:            https://github.com/ggerganov/whisper.cpp
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz#/whisper.cpp-%{version}.tar.gz
 # https://github.com/ggerganov/whisper.cpp/pull/1791
-# Patch0:         0001-Gieneralize-install-locations.patch
+Patch0:         0001-Generalize-install-locations.patch
 
 ExclusiveArch:  x86_64 aarch64
 %global toolchain gcc
@@ -211,8 +211,7 @@ cp -p %{_vpath_srcdir}/stream whisper-cpp-stream
 %{_bindir}/whisper-cpp-server
 %{_bindir}/whisper-cpp-bench
 %{_bindir}/whisper-cpp-stream
-%{_libdir}libwhisper.so.%{version}
-%{_libdir}libwhisper.so
+%{_libdir}/libwhisper.so.%{version}
 
 %files devel
 %doc README.md
@@ -226,7 +225,10 @@ cp -p %{_vpath_srcdir}/stream whisper-cpp-stream
 %{_libdir}/ggml-backend.o
 %{_libdir}/ggml.o
 %{_libdir}/ggml-quants.o
+%{_includedir}/ggml.h
+%{_includedir}/whisper.h
 %{_libdir}/whisper.o
+%{_libdir}/libwhisper.so
 
 %changelog
 %autochangelog
