@@ -187,9 +187,9 @@ make clean
 
 # output:
 # main, quantize, server, bench
-%make_build
+# %make_build
 # stream
-%make_build stream
+# %make_build stream
 # libwhisper.so libwhisper.so.%{version}
 %cmake_build
 
