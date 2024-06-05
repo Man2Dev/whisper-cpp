@@ -193,11 +193,11 @@ make clean
 # libwhisper.so libwhisper.so.%{version}
 %cmake_build
 
-cp -p %{_vpath_srcdir}/main whisper-cpp
-cp -p %{_vpath_srcdir}/quantize whisper-cpp-quantize
-cp -p %{_vpath_srcdir}/server whisper-cpp-server
-cp -p %{_vpath_srcdir}/bench whisper-cpp-bench
-cp -p %{_vpath_srcdir}/stream whisper-cpp-stream
+install -p %{_vpath_srcdir}/main -t %{buildroot}/whisper-cpp
+install -p %{_vpath_srcdir}/quantize -t %{buildroot}/whisper-cpp-quantize
+install -p %{_vpath_srcdir}/server -t %{buildroot}/whisper-cpp-server
+install -p %{_vpath_srcdir}/bench -t %{buildroot}/whisper-cpp-bench
+install -p %{_vpath_srcdir}/stream -t %{buildroot}/whisper-cpp-stream
 
 %install
 %cmake_install
