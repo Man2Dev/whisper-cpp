@@ -204,15 +204,6 @@ make clean
 %files devel
 %doc README.md
 %license LICENSE
-%{_libdir}/main
-%{_libdir}/quantize
-%{_libdir}/server
-%{_libdir}/bench
-%{_libdir}/stream
-%{_libdir}/ggml-alloc.o
-%{_libdir}/ggml-backend.o
-%{_libdir}/ggml.o
-%{_libdir}/ggml-quants.o
 %{_includedir}/ggml.h
 %{_includedir}/whisper.h
 %{_libdir}/whisper.o
