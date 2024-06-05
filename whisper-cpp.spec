@@ -193,6 +193,24 @@ make clean
 # libwhisper.so libwhisper.so.%{version}
 %cmake_build
 
+# built files moved to redhat-linux-build
+cp -p %{_vpath_srcdir}/main redhat-linux-build/main
+cp -p %{_vpath_srcdir}/quantize redhat-linux-build/quantize
+cp -p %{_vpath_srcdir}/server redhat-linux-build/server
+cp -p %{_vpath_srcdir}/bench redhat-linux-build/bench
+cp -p %{_vpath_srcdir}/stream redhat-linux-build/stream
+cp -p %{_vpath_srcdir}/ggml-alloc.o redhat-linux-build/ggml-alloc.o
+cp -p %{_vpath_srcdir}/ggml-backend.o redhat-linux-build/ggml-backend.o
+cp -p %{_vpath_srcdir}/ggml.o redhat-linux-build/ggml.o
+cp -p %{_vpath_srcdir}/ggml-quants.o redhat-linux-build/ggml-quants.o
+cp -p %{_vpath_srcdir}/whisper.o redhat-linux-build/whisper.o
+
+cp -p %{_vpath_srcdir}/main redhat-linux-build/whisper-cpp
+cp -p %{_vpath_srcdir}/quantize redhat-linux-build/whisper-cpp-quantize
+cp -p %{_vpath_srcdir}/server redhat-linux-build/whisper-cpp-server
+cp -p %{_vpath_srcdir}/bench redhat-linux-build/whisper-cpp-bench
+cp -p %{_vpath_srcdir}/stream redhat-linux-build/whisper-cpp-stream
+
 %install
 %cmake_install
 
@@ -200,10 +218,25 @@ make clean
 %doc README.md
 %doc AUTHORS
 %license LICENSE
+%{_bindir}/whisper-cpp
+%{_bindir}/whisper-cpp-quantize
+%{_bindir}/whisper-cpp-server
+%{_bindir}/whisper-cpp-bench
+%{_bindir}/whisper-cpp-stream
+%{_libdir}/libwhisper.so.%{version}
 
 %files devel
 %doc README.md
 %license LICENSE
+%{_libdir}/main
+%{_libdir}/quantize
+%{_libdir}/server
+%{_libdir}/bench
+%{_libdir}/stream
+%{_libdir}/ggml-alloc.o
+%{_libdir}/ggml-backend.o
+%{_libdir}/ggml.o
+%{_libdir}/ggml-quants.o
 %{_includedir}/ggml.h
 %{_includedir}/whisper.h
 %{_libdir}/whisper.o
