@@ -194,11 +194,12 @@ make clean
 %cmake_build
 
 # change named for cli version of binery
-cp -p %{_vpath_srcdir}/main whisper-cpp
-cp -p %{_vpath_srcdir}/quantize whisper-cpp-quantize
-cp -p %{_vpath_srcdir}/server whisper-cpp-server
-cp -p %{_vpath_srcdir}/bench whisper-cpp-bench
-cp -p %{_vpath_srcdir}/stream whisper-cpp-stream
+mkdir -p %{buildroot}%{_bindir}
+cp -p %{_vpath_srcdir}/main %{buildroot}%{_bindir}/whisper-cpp
+cp -p %{_vpath_srcdir}/quantize %{buildroot}%{_bindir}/whisper-cpp-quantize
+cp -p %{_vpath_srcdir}/server %{buildroot}%{_bindir}/whisper-cpp-server
+cp -p %{_vpath_srcdir}/bench %{buildroot}%{_bindir}/whisper-cpp-bench
+cp -p %{_vpath_srcdir}/stream %{buildroot}%{_bindir}/whisper-cpp-stream
 
 %install
 %cmake_install
