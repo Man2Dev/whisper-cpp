@@ -193,23 +193,12 @@ make clean
 # libwhisper.so libwhisper.so.%{version}
 %cmake_build
 
-# built files moved to redhat-linux-build
-cp -p %{_vpath_srcdir}/main redhat-linux-build/main
-cp -p %{_vpath_srcdir}/quantize redhat-linux-build/quantize
-cp -p %{_vpath_srcdir}/server redhat-linux-build/server
-cp -p %{_vpath_srcdir}/bench redhat-linux-build/bench
-cp -p %{_vpath_srcdir}/stream redhat-linux-build/stream
-cp -p %{_vpath_srcdir}/ggml-alloc.o redhat-linux-build/ggml-alloc.o
-cp -p %{_vpath_srcdir}/ggml-backend.o redhat-linux-build/ggml-backend.o
-cp -p %{_vpath_srcdir}/ggml.o redhat-linux-build/ggml.o
-cp -p %{_vpath_srcdir}/ggml-quants.o redhat-linux-build/ggml-quants.o
-cp -p %{_vpath_srcdir}/whisper.o redhat-linux-build/whisper.o
-
-cp -p %{_vpath_srcdir}/main redhat-linux-build/whisper-cpp
-cp -p %{_vpath_srcdir}/quantize redhat-linux-build/whisper-cpp-quantize
-cp -p %{_vpath_srcdir}/server redhat-linux-build/whisper-cpp-server
-cp -p %{_vpath_srcdir}/bench redhat-linux-build/whisper-cpp-bench
-cp -p %{_vpath_srcdir}/stream redhat-linux-build/whisper-cpp-stream
+# change named for cli version of binery
+cp -p %{_vpath_srcdir}/main whisper-cpp
+cp -p %{_vpath_srcdir}/quantize whisper-cpp-quantize
+cp -p %{_vpath_srcdir}/server whisper-cpp-server
+cp -p %{_vpath_srcdir}/bench whisper-cpp-bench
+cp -p %{_vpath_srcdir}/stream whisper-cpp-stream
 
 %install
 %cmake_install
