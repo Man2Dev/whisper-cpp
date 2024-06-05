@@ -127,7 +127,7 @@ Requires:       %{name}%{?_isa} = openblas-%{version}-%{release}
 %endif
 
 %prep
-%autosetup -n whisper.cpp-%{version}
+%autosetup -p1 -n whisper.cpp-%{version}
 
 # verson the *.so
 sed -i -e 's/POSITION_INDEPENDENT_CODE ON/POSITION_INDEPENDENT_CODE ON SOVERSION %{version}/' CMakeLists.txt
@@ -173,46 +173,34 @@ make clean
     -DWHISPER_PERF=OFF \
 %if %{with openvino}
     -DWHISPER_OPENVINO=ON \
-%else
-    -DWHISPER_OPENVINO=OFF \
 %endif
 %if %{with openblas}
     -DWHISPER_OPENBLAS=ON \
-%else
-    -DWHISPER_OPENBLAS=OFF \
 %endif
 %if %{with examples}
     -DWHISPER_BUILD_EXAMPLES=ON \
-%else
-    -DWHISPER_BUILD_EXAMPLES=OFF \
 %endif
 %if %{with test}
     -DWHISPER_BUILD_TESTS=ON \
-%else
-    -DWHISPER_BUILD_TESTS=OFF \
 %endif
 
 
-# output
+# output:
 # main, quantize, server, bench
-%make_build %{_make_output_sync} %{?_smp_mflags} %{_make_verbose}
+%make_build
+# stream
 %make_build stream
+# libwhisper.so libwhisper.so.%{version}
+%cmake_build
 
-install -p %{_vpath_srcdir}/main -t %{_bindir}/whisper-cpp
-install -p %{_vpath_srcdir}/quantize -t %{_bindir}/whisper-cpp-quantize
-install -p %{_vpath_srcdir}/server -t %{_bindir}/whisper-cpp-server
-install -p %{_vpath_srcdir}/bench -t %{_bindir}/whisper-cpp-bench
-install -p %{_vpath_srcdir}/stream -t %{_bindir}/whisper-cpp-stream
-install -p %{_vpath_srcdir}/main -t %{_libdir}/main
-install -p %{_vpath_srcdir}/quantize -t %{_libdir}/quantize
-install -p %{_vpath_srcdir}/server -t %{_libdir}/server
-install -p %{_vpath_srcdir}/bench -t %{_libdir}/bench
-install -p %{_vpath_srcdir}/stream -t %{_libdir}/stream
-install -p %{_vpath_srcdir}/ggml-alloc.o -t %{_libdir}/ggml-alloc.o
-install -p %{_vpath_srcdir}/ggml-backend.o -t %{_libdir}/ggml-backend.o
-install -p %{_vpath_srcdir}/ggml.o -t %{_libdir}/ggml.o
-install -p %{_vpath_srcdir}/ggml-quants.o -t %{_libdir}/ggml-quants.o
-install -p %{_vpath_srcdir}/whisper.o -t %{_libdir}/whisper.o
+cp -p %{_vpath_srcdir}/main whisper-cpp
+cp -p %{_vpath_srcdir}/quantize whisper-cpp-quantize
+cp -p %{_vpath_srcdir}/server whisper-cpp-server
+cp -p %{_vpath_srcdir}/bench whisper-cpp-bench
+cp -p %{_vpath_srcdir}/stream whisper-cpp-stream
+
+%install
+%cmake_install
 
 %files
 %doc README.md
@@ -223,6 +211,8 @@ install -p %{_vpath_srcdir}/whisper.o -t %{_libdir}/whisper.o
 %{_bindir}/whisper-cpp-server
 %{_bindir}/whisper-cpp-bench
 %{_bindir}/whisper-cpp-stream
+%{_libdir}libwhisper.so.%{version}
+%{_libdir}libwhisper.so
 
 %files devel
 %doc README.md
