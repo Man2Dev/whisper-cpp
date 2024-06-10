@@ -1,3 +1,10 @@
+# Pass "--with=exmaples" to rpmbuild if you want the examples
+%bcond_with examples
+# Pass "--with=tests" to rpmbuild if you want to run the tests
+%bcond_with tests
+# Pass --without=devel to rpmbuild if you don't want to run the devel
+%bcond_without devel
+
 Summary:        Port of OpenAI's Whisper model in C/C++
 Name:           whisper-cpp
 
@@ -43,12 +50,32 @@ recognition (ASR) model: \
 %description
 %{base_description}
 
+%if %{with devel}
 %package devel
-Summary:        Libraries and headers for %{name}
+Summary:        Libraries, headers, tests and examples for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 
-%description
-%{base_description}
+%description devel
+%{summary}
+%endif
+
+%if %{with test}
+%package test
+Summary:        Tests for %{name}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+
+%description test
+%{summary}
+%endif
+
+%if %{with examples}
+%package examples
+Summary:        Examples for %{name}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+
+%description examples
+%{summary}
+%endif
 
 %prep
 %autosetup -p1 -n whisper.cpp-%{version}
@@ -59,12 +86,24 @@ sed -i -e 's/POSITION_INDEPENDENT_CODE ON/POSITION_INDEPENDENT_CODE ON SOVERSION
 %build
 
 %cmake \
-    -DWHISPER_BUILD_TESTS=ON \
     -DWHISPER_NO_AVX=ON \
     -DWHISPER_NO_AVX2=ON \
     -DWHISPER_NO_FMA=ON \
-    -DWHISPER_NO_F16C=ON
-    
+    -DWHISPER_NO_F16C=ON \
+%if %{with devel}
+    -DWHISPER_BUILD_EXAMPLES=ON \
+    -DWHISPER_BUILD_TESTS=ON \
+%else
+    -DWHISPER_BUILD_TESTS=OFF \
+    -DWHISPER_BUILD_EXAMPLES=OFF \
+%endif
+%if %{with examples}
+    -DWHISPER_BUILD_EXAMPLES=ON \
+%endif
+%if %{with test}
+    -DWHISPER_BUILD_TESTS=ON
+%endif
+
 %cmake_build
 
 %install
@@ -78,7 +117,9 @@ sed -i -e 's/POSITION_INDEPENDENT_CODE ON/POSITION_INDEPENDENT_CODE ON SOVERSION
 %{_libdir}/libwhisper.so.%{version}
 
 %files devel
+%doc AUTHORS
 %doc README.md
+%license LICENSE
 %{_includedir}/ggml.h
 %{_includedir}/whisper.h
 %{_libdir}/libwhisper.so
